@@ -5,4 +5,5 @@ from ocorrencias.models import Ocorrencia
 @admin.register(Ocorrencia)
 class OcorrenciaAdmin(admin.ModelAdmin):
     list_display = ('id', 'solicitante', 'nivelocorrencia','datahora', 'latocorr',
-                    'longocorr','status', 'link',)
+                    'longocorr','status', 'opcao_ocorrencia',)
+    

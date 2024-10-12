@@ -2,6 +2,13 @@ from django.db import models
 from solicitantes.models import Solicitante
 # Create your models here.
 
+OPCOES_OCORRENCIA = [
+        ("ATENDIDA","Atendida"),
+        ("EM ATENDIMENTO","Em atendimento"),
+        ("CONCLUIDA","Concluida"),
+        ("EM AVALIACAO","Em avaliacao"),
+    ]
+        
 # Create your models here.
 class Ocorrencia(models.Model):
     solicitante = models.ForeignKey(
@@ -14,7 +21,7 @@ class Ocorrencia(models.Model):
     latocorr = models.FloatField()
     longocorr = models.FloatField()
     status = models.IntegerField()
-    link = models.CharField(max_length=255)
+    opcao_ocorrencia = models.CharField(max_length=100, choices=OPCOES_OCORRENCIA, default='')
     
     def __str__(self):
         return f'{self.solicitante}'

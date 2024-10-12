@@ -1,22 +1,31 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
+from .models import ContaPolicial
 
-class UserSerializer(serializers.ModelSerializer):
+class ContasPolicialSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        model = ContaPolicial
+        fields = '__all__'
 
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            password=validated_data['password']
-        )
-        return user
+class LoginSerializer(serializers.Serializer):
+    nregistro = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
-    def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
-        if 'password' in validated_data:
-            instance.set_password(validated_data['password'])
-        instance.save()
-        return instance
+    def validate(self, attrs):
+        nregistro = attrs.get('nregistro')
+        password = attrs.get('password')
+
+        # Tenta buscar o policial pelo número de registro (nregistro)
+        try:
+            policial = ContaPolicial.objects.get(nregistro=nregistro)
+        except ContaPolicial.DoesNotExist:
+            raise serializers.ValidationError('Registro não encontrado.')
+
+        # Verifica a senha
+        if not check_password(password, policial.password):
+            raise serializers.ValidationError('Credenciais inválidas.')
+
+        # Caso a autenticação seja bem-sucedida, retornamos o policial
+        attrs['user'] = policial
+        return attrs
