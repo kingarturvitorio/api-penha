@@ -35,13 +35,13 @@ class LoginViewSolicitante(APIView):
             # Gera o token de refresh e access para o solicitante autenticado
             refresh = RefreshToken.for_user(solicitante)
 
-            # Retorna os tokens JWT como resposta
+            # Retorna os tokens JWT e o ID do usuário como resposta
             return Response({
+                'id': solicitante.id,  # Adiciona o ID do solicitante na resposta
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
             }, status=status.HTTP_200_OK)
         else:
             # Se houver erro de validação, retorna o erro
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     
