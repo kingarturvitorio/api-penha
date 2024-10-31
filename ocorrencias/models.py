@@ -21,7 +21,7 @@ class Ocorrencia(models.Model):
     latocorr = models.FloatField()
     longocorr = models.FloatField()
     status = models.IntegerField()
-    opcao_ocorrencia = models.CharField(max_length=100, choices=OPCOES_OCORRENCIA, default='')
+    opcao_ocorrencia = models.CharField(max_length=100, choices=OPCOES_OCORRENCIA, default='', null=True, blank=True)
     
     def __str__(self):
         return f'{self.solicitante}'
