@@ -1,7 +1,7 @@
 # gps_app/routing.py
-from django.urls import re_path
+from django.urls import path
 from .consumers import GPSConsumer
 
 websocket_urlpatterns = [
-    re_path(r'ws/gps/$', GPSConsumer.as_asgi()),
+    path('ws/gps/', GPSConsumer.as_asgi()),
 ]

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ocorrencias.models import Ocorrencia
+from django.contrib.auth import authenticate
 
 class OcorrenciaSerializer(serializers.ModelSerializer):
     class Meta:
